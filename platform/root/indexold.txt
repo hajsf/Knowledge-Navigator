@@ -1,0 +1,125 @@
+{{define "content"}}
+<section class="section">
+  <div class="container has-text-centered">
+          <h1 class="title">Knowledge Navigator ملاح المعرفة</h1>
+          <p class="subtitle">
+              An application that take enterprises from the ERP transactional systems, to an AI era of Contextual Intelligence
+          </p>
+  </div>
+</section>
+    <!-- In the content below the views will be dispalyed -->
+  <div class="columns is-multiline">
+    <div class="column is-one-sixth">
+      <div class="card">
+        <div class="card-content">
+          <p class="title is-6">Business Intelligence</p>
+          <p class="subtitle is-7">Financial and Operationl</p>
+        </div>
+      </div>
+    </div>  
+    <div class="column is-one-sixth">
+      <div class="card" style="max-width: 200px;">
+        <div class="card-content">
+          <p class="title is-6">Business Intelligence</p>
+          <p class="subtitle is-7">Financial and Operationl</p>
+        </div>
+      </div>
+    </div>
+    <div class="column is-one-sixth">
+      <div class="card" style="max-width: 200px;">
+        <div class="card-content">
+          <p class="title is-6">Business Intelligence</p>
+          <p class="subtitle is-7">Financial and Operationl</p>
+        </div>
+      </div>
+    </div>
+    <div class="column is-one-sixth">
+      <div class="card" style="max-width: 200px;">
+        <div class="card-content">
+          <p class="title is-6">Business Intelligence</p>
+          <p class="subtitle is-7">Financial and Operationl</p>
+        </div>
+      </div>
+    </div>
+    <div class="column is-one-sixth">
+      <div class="card" style="max-width: 200px;">
+        <div class="card-content">
+          <p class="title is-6">Business Intelligence</p>
+          <p class="subtitle is-7">Financial and Operationl</p>
+        </div>
+      </div>
+    </div>
+    <div class="column is-one-sixth">
+      <div class="card" style="max-width: 200px;">
+        <div class="card-content">
+          <p class="title is-6">Business Intelligence</p>
+          <p class="subtitle is-7">Financial and Operationl</p>
+        </div>
+      </div>
+    </div>
+    <div class="column is-one-sixth">
+      <div class="card" style="max-width: 200px;">
+        <div class="card-content">
+          <p class="title is-6">Business Intelligence</p>
+          <p class="subtitle is-7">Financial and Operationl</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="tile is-ancestor">
+      <div class="tile is-parent" style="width: 10%;">
+        <article class="tile is-child box">
+          <p class="title">Business Intelligence</p>
+          <p class="subtitle">Financial and Operationl</p>
+        </article>
+      </div>
+      <div class="tile is-parent" style="width: 10%;">
+        <article class="tile is-child box">
+          <p class="title">Customer Relationship Management</p>
+          <p class="subtitle">WhatsApp bot</p>
+        </article>
+      </div>
+
+      
+      <div class="tile is-parent" style="width: 10%;">
+        <article class="tile is-child box">
+          <p class="title">Recruitment and Talent Management</p>
+          <p class="subtitle">Resemues evaluation</p>
+        </article>
+      </div>
+      <div class="tile is-parent" style="width: 10%;">
+        <article class="tile is-child box">
+          <p class="title">Marketing Automation</p>
+          <p class="subtitle">Subtitle</p>
+        </article>
+      </div>
+    </div>
+
+        <div class="tile is-ancestor">
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">Insights</p>
+          <p class="subtitle">Financial and Operationl</p>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">Chatbot</p>
+          <p class="subtitle">WhatsApp bot</p>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">Recruitment</p>
+          <p class="subtitle">Resemues evaluation</p>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <p class="title">Four</p>
+          <p class="subtitle">Subtitle</p>
+        </article>
+      </div>
+    </div>
+{{end}}
