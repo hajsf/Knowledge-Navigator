@@ -13,7 +13,7 @@ import (
 
 func ChatGPT3(message map[string]string) string {
 	url := "https://api.openai.com/v1/chat/completions"
-	API_KEY := "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"
+	API_KEY := ""
 
 	api.Messages = append(api.Messages, message)
 
