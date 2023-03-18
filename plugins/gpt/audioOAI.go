@@ -15,7 +15,7 @@ import (
 
 func AudioGPT(fileName string) string {
 	url := "https://api.openai.com/v1/audio/transcriptions"
-	API_KEY := "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"
+	API_KEY := ""
 	var textValue string
 	var result map[string]interface{}
 	var b bytes.Buffer
