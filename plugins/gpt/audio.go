@@ -55,8 +55,8 @@ func Audio3(fileName string) string {
 
 		//	req.Header.Add("Content-Type", "application/json")
 		req.Header.Set("Content-Type", w.FormDataContentType())
-		req.Header.Add("customer-id", "2850595798")
-		req.Header.Add("x-api-key", "zqt_qeij1u1-_mMgdjZqzf8IkQlmEQDLsZXDtKq52Q")
+		req.Header.Add("customer-id", "")
+		req.Header.Add("x-api-key", "")
 
 		client := &http.Client{}
 		res, err := client.Do(req)
