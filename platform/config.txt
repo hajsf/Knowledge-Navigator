@@ -1,0 +1,13 @@
+/*
+package main
+
+import (
+	"hajsf/router"
+)
+
+// InitRoutes create all the routes
+func InitRoutes(r *router.Router) {
+		r.Route(http.MethodGet, "/hello/:name", hello.HelloHandler)
+		r.Route(http.MethodGet, "/world", world.WorldHandler)
+}
+*/

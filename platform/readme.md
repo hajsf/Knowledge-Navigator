@@ -1,0 +1,7 @@
+This is a simple implementation of an HTTP router in Go. It allows you to define routes with a specific HTTP method and path pattern and associate them with a handler function. When a request comes in, the router will try to find a matching route based on the request’s method and path. If it finds one, it will call the associated handler function and pass in any URL parameters that were extracted from the path.
+
+The Route method is used to define new routes. It takes in an HTTP method (e.g., “GET”, “POST”), a path pattern (e.g., “/users/:id”), and a handler function. The path pattern can include named parameters that start with a colon (:). These parameters will be extracted from the request’s path and passed to the handler function.
+
+The ServeHTTP method is used to handle incoming requests. It implements the http.Handler interface so that it can be used as an HTTP handler. When called, it will loop through all defined routes and try to find one that matches the request’s method and path. If it finds one, it will extract any URL parameters from the path, store them in the request’s context using context.WithValue, and then call the route’s handler function.
+
+The URLParam function is used to retrieve URL parameters from within a handler function. It takes in an *http.Request and a parameter name and returns the value of that parameter if it exists.
