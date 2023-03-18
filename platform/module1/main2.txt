@@ -1,0 +1,35 @@
+// Package module1 provides a simple web server that serves content using Go's html/template package.
+package module1
+
+// The import keyword is used to include packages in a Go source file. The packages are specified by their import paths and are separated by spaces within the parentheses. This line of code imports the "fmt" and "net/http" packages so that their exported identifiers can be used in this source file.
+import (
+	"embed"
+	"fmt"
+	"hajsf/router"
+	"html/template"
+	"io/fs"
+	"net/http"
+)
+
+//go:embed view1.html
+var embeddedFiles embed.FS
+var debug = true
+
+func init() {
+	router.R.Route(http.MethodGet, "/module1", Page1Handler)
+}
+func Page1Handler(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Fprintf(w, "An error occurred: %v", r)
+		}
+	}()
+	var t *template.Template
+	if debug {
+		t = template.Must(template.ParseFiles("root/layout.html", "module1/view1.html"))
+	} else {
+		fsys := fs.FS(embeddedFiles)
+		t = template.Must(template.ParseFS(fsys, "root/layout.html", "module1/view1.html"))
+	}
+	t.Execute(w, nil)
+}

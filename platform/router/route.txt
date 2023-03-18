@@ -1,0 +1,85 @@
+package router
+
+import (
+"context"
+"log"
+"net/http"
+"regexp"
+"strings"
+)
+var R *Router
+func init() {
+R = new(Router)
+}
+type ctxKey string
+const paramsKey ctxKey = "params"
+type RouteEntry struct {
+Method      string
+Path        *regexp.Regexp
+HandlerFunc http.HandlerFunc
+}
+type Router struct {
+routes []*RouteEntry
+}
+func (rtr *Router) Route(method, path string, handlerFunc http.HandlerFunc) {
+compiledPath := compilePath(path)
+routeEntry := &RouteEntry{
+Method:      method,
+Path:        compiledPath,
+HandlerFunc: handlerFunc,
+}
+rtr.routes = append(rtr.routes, routeEntry)
+}
+func (rtr *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+for _, route := range rtr.routes {
+if route.Method != r.Method {
+continue
+}
+match := route.Path.FindStringSubmatch(r.URL.Path)
+if match == nil {
+continue
+}
+params := make(map[string]string)
+for i, name := range route.Path.SubexpNames() {
+if i == 0 || name == "" {
+continue
+}
+params[name] = match[i]
+}
+log.Printf("Matched route: %s %s", route.Method, route.Path.String())
+ctx := context.WithValue(r.Context(), paramsKey, params)
+route.HandlerFunc.ServeHTTP(w, r.WithContext(ctx))
+return
+}
+http.NotFound(w, r)
+}
+func URLParam(r *http.Request, name string) string {
+ctx := r.Context()
+params, ok := ctx.Value(paramsKey).(map[string]string)
+if !ok {
+return ""
+}
+value, ok := params[name]
+if !ok {
+return ""
+}
+return value
+}
+func compilePath(path string) *regexp.Regexp {
+var regex strings.Builder
+regex.WriteString(`^`)
+parts := strings.Split(path, "/")
+for _, part := range parts {
+if strings.HasPrefix(part, ":") {
+regex.WriteString(`(?P<`)
+regex.WriteString(part[1:])
+regex.WriteString(`>[^/]+)`)
+} else {
+regex.WriteString(regexp.QuoteMeta(part))
+}
+regex.WriteString("/")
+}
+regexString := regex.String()[:regex.Len()-1]
+regexString += `$`
+return regexp.MustCompile(regexString)
+}

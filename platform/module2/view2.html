@@ -1,0 +1,14 @@
+{{define "content"}}
+    <label for="myText">Enter text:</label>
+    <input type="text" id="myText" title="Enter text here" placeholder="Enter text">
+    {{if .UserIsAllowed}}
+        <button onclick="myFunction()">Click me</button>
+    {{else}}
+        <button disabled>Click me</button>
+    {{end}}
+    <script>
+        function myFunction() {
+            alert("Hi");
+        }
+    </script>
+{{end}}
