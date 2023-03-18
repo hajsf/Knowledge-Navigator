@@ -1,0 +1,33 @@
+{{define "content"}}
+<script>
+async function sendData() {
+    // Get the value of the input text
+    var input = document.getElementById("input").value;
+
+    // Send the data to the API using fetch()
+    const response = await fetch('/gpt/api/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({message: input})
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response data here
+        console.log(data);
+        document.getElementById("output").innerHTML = data.content
+    })
+    .catch(error => {
+        // Handle any errors here
+        console.log(error);
+    });
+}
+</script>
+
+<label for="input">Input:</label><br>
+<textarea id="input"></textarea><br>
+<button onclick="sendData()">Send Data</button><br><br>
+<label>Output:</label><br>
+<pre id="output"></pre>
+{{end}}

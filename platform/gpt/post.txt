@@ -1,0 +1,25 @@
+package gpt
+
+import (
+	"encoding/json"
+	"net/http"
+)
+
+func Post(w http.ResponseWriter, r *http.Request) {
+	// Decode the JSON request body into a RequestData struct
+	var requestData RequestData
+	err := json.NewDecoder(r.Body).Decode(&requestData)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Create a ResponseData struct with some data
+	responseData := ResponseData{
+		Message: "Hello, " + requestData.Name + "!",
+	}
+
+	// Encode the ResponseData struct as JSON and write it to the response
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(responseData)
+}

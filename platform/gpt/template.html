@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>API Response</title>
+<script>
+function sendData() {
+    // Get the values of the input text and checkbox
+    var name = document.getElementById("name").value;
+    var checked = document.getElementById("checkbox").checked;
+
+    // Create a JSON object with the data
+    var data = {
+        name: name,
+        checked: checked
+    };
+
+    // Send the data to the API using an XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/data");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Parse the JSON response
+            var responseData = JSON.parse(xhr.responseText);
+
+            // Update the page with the message from the API response
+            document.getElementById("message").innerHTML = responseData.message;
+        }
+    };
+    xhr.send(JSON.stringify(data));
+}
+</script>
+</head>
+<body>
+<label for="name">Name:</label>
+<input type="text" id="name">
+<br>
+<label for="checkbox">Checked:</label>
+<input type="checkbox" id="checkbox">
+<br>
+<button onclick="sendData()">Send Data</button>
+<p id="message">{{.Message}}</p>
+</body>
+</html>

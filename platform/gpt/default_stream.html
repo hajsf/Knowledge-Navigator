@@ -1,0 +1,112 @@
+async function sendData() {
+    // Get the value of the input text
+    var input = document.getElementById("input").value;
+
+    // Send the data to the API using fetch()
+    const response = await fetch('/gpt/api/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({message: input})
+    });
+
+    const reader = response.body.getReader();
+    let decoder = new TextDecoder();
+    
+    while (true) {
+        const { done, value } = await reader.read();
+        
+        if (done) break;
+        
+        let chunk = decoder.decode(value);
+        
+        // Handle each chunk of data here
+        console.log(chunk);
+        
+        document.getElementById("output").innerHTML += chunk;
+    }
+}
+
+
+async function sendData() {
+    // Get the value of the input text
+    var input = document.getElementById("input").value;
+
+    // Send the data to the API using fetch()
+    const response = await fetch('/gpt/api/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({message: input})
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response data here
+        console.log(data);
+        document.getElementById("output").innerHTML = data.message
+    })
+    .catch(error => {
+        // Handle any errors here
+        console.log(error);
+    });
+}
+
+
+async function sendData() {
+    // Get the value of the input text
+    var input = document.getElementById("input").value;
+
+    // Send the data to the API using fetch()
+    const response = await fetch('/gpt/api/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({message: input})
+    });
+
+    const reader = response.body.getReader();
+    let decoder = new TextDecoder();
+
+    while (true) {
+        const { done, value } = await reader.read();
+        
+        if (done) break;
+        
+        let chunk = decoder.decode(value);
+
+        // Handle each chunk of data here
+        let obj = JSON.parse(chunk);
+
+        console.log(chunk);
+        msg = obj.message === "done" ? "[done]" : obj.message + " "
+
+        document.getElementById("output").innerHTML += msg;
+    }
+}
+
+async function sendData() {
+    // Get the value of the input text
+    var input = document.getElementById("input").value;
+
+    // Send the data to the API using fetch()
+    const response = await fetch('/gpt/api/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({message: input})
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response data here
+        console.log(data.message);
+        document.getElementById("output").innerHTML = data.message
+    })
+    .catch(error => {
+        // Handle any errors here
+        console.log(error);
+    });
+}

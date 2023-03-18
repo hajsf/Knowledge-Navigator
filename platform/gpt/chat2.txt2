@@ -1,0 +1,120 @@
+package gpt
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
+)
+
+func chat2(prompt string) string {
+	ch := make(chan string)
+	url := "https://experimental.willow.vectara.io/v1/completions"
+	//	payload := strings.NewReader("{\n  \"model\": \"text-davinci-003\",\n  \"prompt\": \"Say this is a test\",\n  \"max_tokens\": 7,\n  \"temperature\": 0\n}")
+	data := map[string]interface{}{
+		"model":  "text-davinci-003", //"gpt-3.5-turbo",
+		"prompt": prompt,
+		//"stream": true,
+		"max_tokens": 1500,
+		//	"temperature": 0,
+	}
+
+	payload, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println(err)
+		ch <- "sorry, error happened"
+	}
+
+	//req, _ := http.NewRequest("POST", url, payload)
+	req, err := http.NewRequestWithContext(context.Background(), "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("customer-id", "2850595798")
+	req.Header.Add("x-api-key", "zqt_qeij1u1-_mMgdjZqzf8IkQlmEQDLsZXDtKq52Q")
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println("error")
+	}
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	text := string(body)
+
+	var result map[string]interface{}
+	json.Unmarshal([]byte(text), &result)
+	var answer string
+	if result["choices"] != nil {
+		x := result["choices"].([]interface{})[0].(map[string]interface{})["text"]
+		if x != nil {
+			str, ok := x.(string)
+			if ok {
+				prompt += " " + answer + " "
+				answer = strings.TrimLeft(str, "\n")
+				fmt.Print(strings.TrimLeft(str, "\n")) // remove the leading \n
+			} else {
+				answer = "x is not a string"
+				fmt.Println("x is not a string")
+			}
+		}
+	}
+
+	return answer
+
+	/*	var answer string
+		// Send the request
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			fmt.Println(err)
+			ch <- "sorry, error happened"
+			close(ch)
+		}
+		defer resp.Body.Close()
+
+		scanner := bufio.NewScanner(resp.Body)
+		for scanner.Scan() {
+			line := scanner.Text()
+			fmt.Println("line recieved:", line)
+			if strings.HasPrefix(line, "data: ") {
+				data := strings.TrimPrefix(line, "data: ")
+				var result map[string]interface{}
+				json.Unmarshal([]byte(data), &result)
+
+				if result["choices"] != nil {
+					x := result["choices"].([]interface{})[0].(map[string]interface{})["text"]
+					if x != nil {
+						str, ok := x.(string)
+						if ok {
+							ch <- strings.TrimLeft(str, "\n")
+							answer += strings.TrimLeft(str, "\n")
+							fmt.Print(strings.TrimLeft(str, "\n")) // remove the leading \n
+						} else {
+							ch <- "sorry, error happened"
+							fmt.Println("x is not a string")
+							close(ch)
+						}
+					}
+
+					if data == "[DONE]" {
+						fmt.Println("\ndone")
+						close(ch)
+					}
+					if err := scanner.Err(); err != nil {
+						ch <- "sorry, error happened"
+						fmt.Println("x is not a string")
+						close(ch)
+					}
+				}
+			}
+		}
+	*/
+}

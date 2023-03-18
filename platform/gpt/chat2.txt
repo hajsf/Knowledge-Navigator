@@ -1,0 +1,68 @@
+package gpt
+
+func chat() {
+url := "https://api.openai.com/v1/chat/completions"
+API_KEY := ""
+signalChannel := make(chan os.Signal, 1)
+signal.Notify(signalChannel, syscall.SIGINT)
+messages := []map[string]string{}
+for {
+var input string
+fmt.Print("Enter some text (or 'ctrl+c' to exit): ")
+input, err := bufio.NewReader(os.Stdin).ReadString('\n')
+if err != nil {
+fmt.Println("error reading the input: ", err)
+}
+messages = append(messages, map[string]string{"role": "user", "content": input})
+data := map[string]interface{}{
+"model":    "gpt-3.5-turbo",
+"messages": messages,
+"stream":   true,
+}
+jsonData, err := json.Marshal(data)
+if err != nil {
+fmt.Println(err)
+return
+}
+req, err := http.NewRequestWithContext(context.Background(), "POST", url, bytes.NewBuffer(jsonData))
+if err != nil {
+fmt.Println(err)
+return
+}
+req.Header.Set("Content-Type", "application/json")
+req.Header.Set("Authorization", "Bearer "+API_KEY)
+client := &http.Client{}
+resp, err := client.Do(req)
+if err != nil {
+fmt.Println(err)
+return
+}
+defer resp.Body.Close()
+scanner := bufio.NewScanner(resp.Body)
+for scanner.Scan() {
+line := scanner.Text()
+if strings.HasPrefix(line, "data: ") {
+data := strings.TrimPrefix(line, "data: ")
+var result map[string]interface{}
+json.Unmarshal([]byte(data), &result)
+if result["choices"] != nil {
+x := result["choices"].([]interface{})[0].(map[string]interface{})["delta"].(map[string]interface{})["content"]
+if x != nil {
+str, ok := x.(string)
+if ok {
+fmt.Print(strings.TrimLeft(str, "\n")) 
+} else {
+fmt.Println("x is not a string")
+}
+}
+}
+if data == "[DONE]" {
+fmt.Println("\ndone")
+}
+}
+}
+if err := scanner.Err(); err != nil {
+panic(err)
+}
+}
+}
