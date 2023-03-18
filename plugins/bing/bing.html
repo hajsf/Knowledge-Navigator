@@ -1,0 +1,91 @@
+<div class="content">
+      <div class="ac-container ac-adaptiveCard" tabindex="0" style=""><div class="ac-textBlock" style=""><p>Hello, this is Bing. I can help you with writing an x++ code for creating an extensible control at D365FO platform that displays a web page using html, css, javascript and webassembly files.</p>
+<p>An extensible control is a custom UI element that can be used in forms and reports. <a class="tooltip-target" data-citationid="40c61dd2-1408-5d1f-a079-2fbc0b18b052-5-group" h="ID=SERP,5025.1" href="https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/user-interface/build-extensible-control" target="_blank">It consists of two parts: a server-side part that defines the properties and commands of the control using x++, and a client-side part that defines the visualization and interaction patterns of the control using html, css, javascript and webassembly files</a><a href="https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/user-interface/build-extensible-control" class="ac-anchor sup-target" target="_blank" data-citationid="40c61dd2-1408-5d1f-a079-2fbc0b18b052-3" aria-label="Build extensible controls - Finance &amp; Operations | Dynamics 365" h="ID=SERP,5025.1"><sup>1</sup></a><a href="https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/user-interface/control-extensibility" class="ac-anchor sup-target" target="_blank" data-citationid="40c61dd2-1408-5d1f-a079-2fbc0b18b052-5" aria-label="Control extensibility - Finance &amp; Operations | Dynamics 365" h="ID=SERP,5025.1"><sup>2</sup></a>.</p>
+<p>To write an x++ code for creating an extensible control, you need to follow these steps:</p>
+<ul>
+<li>Create a new class that extends from SysExtensionControlBase class. This class will define the properties and commands of your control using x++ attributes.</li>
+<li>Override the getHtmlView method to return the name of your html file that will render your control on the client-side.</li>
+<li>Override the getScriptView method to return the name of your javascript file that will handle your control’s logic on the client-side.</li>
+<li>Override any other methods or attributes as needed for your specific control’s functionality.</li>
+<li>Create an html file that uses Microsoft Dynamics HTML binding syntax together with jQuery to consume the properties and commands that are defined in x++. <a class="tooltip-target" data-citationid="40c61dd2-1408-5d1f-a079-2fbc0b18b052-16-group" h="ID=SERP,5025.1">You can also use css stylesheets and webassembly modules to enhance your control’s appearance and performance</a><a href="https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/user-interface/build-extensible-control" class="ac-anchor sup-target" target="_blank" data-citationid="40c61dd2-1408-5d1f-a079-2fbc0b18b052-14" aria-label="Build extensible controls - Finance &amp; Operations | Dynamics 365" h="ID=SERP,5025.1"><sup>1</sup></a><a href="https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/user-interface/control-extensibility" class="ac-anchor sup-target" target="_blank" data-citationid="40c61dd2-1408-5d1f-a079-2fbc0b18b052-16" aria-label="Control extensibility - Finance &amp; Operations | Dynamics 365" h="ID=SERP,5025.1"><sup>2</sup></a>.</li>
+<li>Create a javascript file that extends from SysExtensionControlViewModelBase class. <a class="tooltip-target" data-citationid="40c61dd2-1408-5d1f-a079-2fbc0b18b052-19-group" h="ID=SERP,5025.1" href="https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/user-interface/control-extensibility" target="_blank">This class will define any additional client-side properties and commands for your control, as well as any visualization behavior that cannot be declaratively defined in html</a><a href="https://learn.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/user-interface/control-extensibility" class="ac-anchor sup-target" target="_blank" data-citationid="40c61dd2-1408-5d1f-a079-2fbc0b18b052-19" aria-label="Control extensibility - Finance &amp; Operations | Dynamics 365" h="ID=SERP,5025.1"><sup>2</sup></a>.</li>
+<li>Deploy your extensible control files to a folder under Resources\Scripts\Controls folder in your model’s project.</li>
+</ul>
+<p>Here is an example of an x++ code for creating an extensible control that displays a web page using html, css, javascript and webassembly files:</p>
+<pre><code class="language-x++">[ExtensionOf(formStr(MyForm))]
+final class MyExtensibleControl_Extension
+{
+    public void init()
+    {
+        next init();
+
+        // Add a new tab page with an extensible container
+        FormRun formRun = this.formRun();
+        FormBuildTabPageControl tabPageBuild = formRun.design().addTabPage('MyTabPage', 'My Tab Page');
+        FormBuildExtensibleContainerControl containerBuild = tabPageBuild.addExtensibleContainer('MyContainer', 'My Container');
+
+        // Add a new instance of MyExtensibleControl class to the container
+        containerBuild.addControl(FormControlType::SysExtensionControl,
+                                  'MyExtensibleControl',
+                                  classStr(MyExtensibleControl));
+    }
+}
+
+// Define a new class that extends from SysExtensionControlBase
+class MyExtensibleControl extends SysExtensionControlBase
+{
+    // Define a property for storing the URL of the web page
+    [FormControlProperty]
+    public str url;
+
+    // Define a command for refreshing the web page
+    [FormControlCommand]
+    public void refresh()
+    {
+        // Do something here to refresh the web page
+    }
+
+    // Return the name of html file for rendering this control
+    protected str getHtmlView()
+    {
+        return 'MyExtensibleControl.html';
+    }
+
+    // Return the name of javascript file for handling this control's logic
+    protected str getScriptView()
+    {
+        return 'MyExtensibleControl.js';
+    }
+}
+</code></pre>
+<p>Here is an example of an html file for rendering this control:</p>
+<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Use Microsoft Dynamics HTML binding syntax together with jQuery --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">data-bind</span>=<span class="hljs-string">"sys:control"</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- Use CSS stylesheet --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"MyStyle.css"</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- Use WebAssembly module --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"module"</span>&gt;</span><span class="language-javascript">
+      <span class="hljs-keyword">import</span> init <span class="hljs-keyword">from</span> <span class="hljs-string">"MyModule.wasm"</span>;
+      <span class="hljs-title function_">init</span>();
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- Use URL property defined in X++ --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> <span class="hljs-attr">data-bind</span>=<span class="hljs-string">"attr: {src: url}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- Use refresh command defined in X++ --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">data-bind</span>=<span class="hljs-string">"click: refresh"</span>&gt;</span>Refresh<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>Here is an example of a javascript file for handling this control’s logic:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Extend from SysExtensionControlViewModelBase class</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyExtensibleControlViewModel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">SysExtensionControlViewModelBase</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+      <span class="hljs-variable language_">super</span>();
+
+      <span class="hljs-comment">// Define any additional client-side properties or commands here</span>
+
+      <span class="hljs-comment">// For example, you can use Knockout observables to create reactive UI elements</span>
+
+      <span class="hljs-comment">// This observable will store whether the iframe is loaded or not</span>
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">isLoaded</span> = ko.<span class="hljs-title function_">observable</span>(<span class="hljs-literal">false</span>);
+</code></pre>
+</div><div class="ac-horizontal-separator" aria-hidden="true" style=""></div></div>
+    </div>
